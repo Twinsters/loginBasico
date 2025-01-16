@@ -118,26 +118,39 @@ switch ($_REQUEST['case']) {
             ]);
         }
         break;
-    case 'buscarAlumno':
-        try {         
-            $query= "SELECT a.Codigo,a.Nombre,a.Apellido,a.DNI,a.FechaNac,l.Nombre as Localidad FROM Alumno a, Localidad l WHERE a.CodLocalidad = l.Codigo AND a.Codigo = :codigo";
-            $consulta = $conn ->prepare($query);
-            $codigo = $_PUT['idAlumno'];
-            $consulta->execute([':codigo' => $codigo]);
-            $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-            http_response_code(200);
-            echo json_encode([
-                'success' => true,
-                'datos' => $datos
+    case 'buscarMaterias':
+        try {
+            $query = "SELECT m.Nombre FROM Alumno a, Alumno_Materia am, Materia m WHERE :codigoAlumno = a.Codigo  AND a.Codigo = am.codAlu AND m.Codigo = am.CodMat";
+            $consulta = $conn->prepare($query);
+
+            $codigoAlumno = $_GET['idAlumno'];
+            $consulta -> execute([
+                ':codigoAlumno' => $codigoAlumno
             ]);
+            $datos = $consulta ->fetchAll(PDO::FETCH_ASSOC);
+            if($datos){
+                http_response_code(200);
+                echo json_encode([
+                    'success' => true,
+                    'datos' => $datos
+                ]);
+            }
+            else{
+                http_response_code(401);
+                echo json_encode([
+                    'success' => false,
+                    'messege' => 'No se encontraron registros'
+                ]);
+            }
         } catch (PDOException $ex) {
             http_response_code(500);
             echo json_encode([
                 'success' => false,
-                'messege' => "Error en el server". $ex->getMessage()
+                'messege' => 'Error: '. $ex->getMessage()
             ]);
         }
-        break;
+        break;    
+    
     default:
         # code...
         break;
