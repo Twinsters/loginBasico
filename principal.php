@@ -19,7 +19,7 @@
 <?php 
   include("nav.php");
 ?>
-<div  class="container ">
+<div  class="container" style="margin-top:20px;">
   <div class="row row-cols-1 row-cols-md-2 g-4" id="cardsContainer"></div>
 </div>
 </body>

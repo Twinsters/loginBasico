@@ -11,7 +11,7 @@ switch($data['case'] ?? $_REQUEST['case']){
                 http_response_code(400);
                 echo json_encode([
                     'success' => false,
-                    'messege' => 'Error en el id del alumno '
+                    'messege' => 'Error en el id del alumno'
                 ]);
                 exit;
             }

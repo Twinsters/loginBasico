@@ -14,8 +14,7 @@
     <?php
         include('nav.php');
     ?>
-    <div class="container border border-primary" style="margin-top:30px;" >
-
+    <div class="container" style="margin-top:20px;" >
         <button type="button" class="btn btn-primary" onclick="mostrarModalAlumnos();">Nuevo</button>
         <table id="tablaAlumnos" >
             <thead>
