@@ -43,7 +43,7 @@
               <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Materias</span>
                   <select class="form-select" aria-label="Select de Materias" id="sltMaterias"></select>
-                  <button class="btn btn-outline-primary" type="button">Asingar</button>
+                  <button class="btn btn-outline-primary" type="button" onclick= "asingarMateriaAlumno()">Asingar</button>
               </div>
             </div>
           </div>
@@ -55,6 +55,7 @@
                   <th>Codigo</th>
                   <th>Nombre</th>
                   <th>Estado</th>
+                  <th>Opciones</th>
               </thead>
               <tbody></tbody>
           </table>

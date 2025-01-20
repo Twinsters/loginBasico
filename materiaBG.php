@@ -18,7 +18,7 @@ switch( $datos['case'] ?? $_REQUEST['case']){
                 ]);
             }
             else{
-                http_response_code(401);
+                http_response_code(400);
                 echo json_encode([
                     'success' => false,
                     'message' => "Datos no encontrados"
@@ -126,7 +126,7 @@ switch( $datos['case'] ?? $_REQUEST['case']){
                 ':nombre' => $_POST['nombre']
             ]);
             if($consulta->rowCount() > 0){
-                http_response_code(200);
+                http_response_code(201);
                 echo json_encode([
                     'success' => true,
                     'message' => "Datos creados correctamente"
@@ -172,7 +172,7 @@ switch( $datos['case'] ?? $_REQUEST['case']){
 
             }
             else{
-                http_response_code(200);
+                http_response_code(400);
                 echo json_encode([
                     'success' => false,
                     'message' => "Error al eliminar la materia"

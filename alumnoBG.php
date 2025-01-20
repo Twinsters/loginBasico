@@ -34,9 +34,8 @@ switch($data['case'] ?? $_REQUEST['case']){
         }
     break;
     case 'guardarAlumno':
-    
         try {
-            if(empty($_POST["nombre"]) || empty($_POST["apellido"] || is_numeric($_POST["dni"]) || fechaValida($_POST["fechaNac"]) || is_numeric($_POST["codLocalidad"]))){
+            if(empty($_POST["nombre"]) || empty($_POST["apellido"]) || empty($_POST["dni"]) || !fechaValida($_POST["fechaNac"]) || empty($_POST["codLocalidad"])){
                 echo json_encode([
                     'success' => false,
                     'messege' => 'Error en los parametros'
@@ -61,13 +60,13 @@ switch($data['case'] ?? $_REQUEST['case']){
                ':codLocalidad' => $codLocalidad
             ]);
             if($consulta->rowCount() > 0){
-                http_response_code(200);
+                http_response_code(201);
                 echo json_encode([
                     'success'=>true,
                     'messege' => "Alumno guardado correctamente"
                 ]);
             }else{
-                http_response_code(401);
+                http_response_code(400);
                 echo json_encode([
                     'success'=>false,
                     'messege' => "Alumno no guardado correctamente"
@@ -83,7 +82,8 @@ switch($data['case'] ?? $_REQUEST['case']){
         break;
     case 'modificarAlumno':
         try {
-            if( empty($data['idAlumno']) ||empty($data['nombre']) || empty($data['apellido'] || empty($data['dni']) || fechaValida($data['fechaNac']) || empty($data['codLocalidad']))){
+        
+            if( empty($data['idAlumno']) || empty($data['nombre']) || empty($data['apellido']) || empty($data['dni']) || !fechaValida($data['fechaNac']) || empty($data['codLocalidad'])){
                 echo json_encode([
                     'success' => false,
                     'messege' => 'Error en los parametros'
@@ -114,7 +114,7 @@ switch($data['case'] ?? $_REQUEST['case']){
                     'messege' => "Alumno guardado correctamente"
                 ]);
             }else{
-                http_response_code(401);
+                http_response_code(400);
                 echo json_encode([
                     'success'=>false,
                     'messege' => "Alumno no guardado correctamente"

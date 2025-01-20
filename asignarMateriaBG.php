@@ -67,10 +67,15 @@
             try {
                 $query = "EXEC asignarMaterias :idAlumno, :idMateria";
                 $consulta = $conn->prepare($query);
-                $consulta ->bindParam(':idAlumno', $idAlumno);
-                $consulta ->bindParam(':idMateria',$idMateria);
-                $idAlumno = $_GET['idAlumno'];
-                $idMateria = $_GET['idMateria'];
+
+               if(isset($_POST['listaMaterias'])&& is_array($_POST['listaMaterias'])){
+                    foreach($_POST['listaMaterias'] as $materia){
+                
+                        $consulta ->bindParam(':idAlumno', $_POST['idAlumno']);
+                        $consulta ->bindParam(':idMateria', $materia['Codigo']);
+                        $consulta ->bindParam(':CodEstado', $materia['CodEstado']);
+                    }
+               }
                 $consulta->execute();
                 if($consulta->rowCount()>0){
                     http_response_code(200);
@@ -95,6 +100,9 @@
                 ]);                   
             }
         break;
+
+
+
     }
 
 

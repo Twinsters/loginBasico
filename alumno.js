@@ -14,8 +14,7 @@ function buscarAlumnos(){
         dataType:'json',
         success:function(response){
             $("#tablaAlumnos").DataTable().clear().draw();
-            $.each(response.datos,function(i,alumno){
-             
+            $.each(response.datos,function(i,alumno){           
                 $("#tablaAlumnos").DataTable().row.add({
                     "0":alumno.Codigo,
                     "1":alumno.Nombre,
@@ -41,7 +40,6 @@ function iconoAccionesAlumnos(codigo){
     retorno = retorno + '<button type="button" onclick="mostrarModalAlumnos('+codigo+')" class="btn btn-primary">Editar</button>'
     return retorno;
 }
-
 function buscarLocalidad(){
     $.ajax({
         url:"alumnoBG.php",
@@ -80,8 +78,8 @@ function mostrarModalAlumnos(codigo=""){
                 $("#txtNombre").val(response.datos[0].Nombre);    
                 $("#txtApellido").val(response.datos[0].Apellido);  
                 $("#txtDNI").val(response.datos[0].DNI);           
-                $("#datepicker").val(response.datos[0].FechaNac);           
-                $("#sltLocalidad").val(response.datos[0].CodLocalidad);
+                $("#datepicker").val(response.datos[0].FechaNac);          
+                $("#sltLocalidad").val(parseInt(response.datos[0].CodLocalidad));
             },
             error:function(error,status,xhr){
                 console.error('Error en la solicitud:', error);
@@ -93,6 +91,7 @@ function mostrarModalAlumnos(codigo=""){
         });
     }
     else{
+        $("#codigoAlumno").val("");
         $("#txtNombre").val("");
         $("#txtApellido").val("");
         $("#txtDNI").val("");
@@ -131,7 +130,6 @@ function guardarDatos(){
             let resp = JSON.parse(xhr.responseText);  
             alert(resp.message);
         }
-
     });
 }
 
