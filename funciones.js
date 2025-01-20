@@ -6,7 +6,7 @@ function obtenerFechaHoy() {
     return anio + "-" + mes + "-" + dia; 
 }
 
-function crearDataTable(idTable){
+function crearDataTable(idTable,visibilidad = true){
     $('#'+idTable).DataTable({
         paging: true,           
         order: [[1, 'asc']],     
@@ -19,7 +19,13 @@ function crearDataTable(idTable){
                 previous: 'Anterior',
                 infoEmpty: 'No hay registros disponibles',
             }
-        }
+        },
+        columnDefs: [
+            {
+                targets: 0, 
+                visible: visibilidad 
+            }
+        ]
     });
 }
 function crearDatePicker(idDatePicker){
