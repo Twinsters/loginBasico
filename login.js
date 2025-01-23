@@ -22,8 +22,7 @@ function buscar(){
                 console.error('Error en la solicitud:', error);
                 console.error('Estado:', status);
                 console.error('Respuesta del servidor:', xhr.responseText);
-                let resp = JSON.parse(xhr.responseText);  
-                alert(resp.message);         
+                alert("Error en el servidor");         
             }   
         });
     }

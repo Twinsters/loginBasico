@@ -19,10 +19,10 @@
                     ]);
                 }
                 else{
-                    http_response_code(400);
+                    http_response_code(200);
                     echo json_encode([
                         'success' => false,
-                        'message' => "Datos vacios"
+                        'datos' => $datos
                     ]);    
                 }
             } catch (PDOException $ex) {

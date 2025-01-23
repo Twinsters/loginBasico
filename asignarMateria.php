@@ -48,7 +48,7 @@ session_start();
               <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1">Materias</span>
                   <select class="form-select" aria-label="Select de Materias" id="sltMaterias"></select>
-                  <button class="btn btn-outline-primary" type="button" onclick= "asingarMateriaAlumno()">Asingar</button>
+                  <button class="btn btn-outline-primary" id="asignarMateria" type="button" onclick= "asingarMateriaAlumno()">Asingar</button>
               </div>
             </div>
           </div>

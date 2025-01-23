@@ -41,6 +41,7 @@ function iconoAlumnosMaterias(idAlumno){
     return retorno;
 }
 function traerMateriasDisponibles(idAlumno){
+    
     $.ajax({
         url:'asignarMateriaBG.php',
         method:'GET',
@@ -59,6 +60,7 @@ function traerMateriasDisponibles(idAlumno){
             }
             else {
                 select.append('<option value="">No hay materias disponibles</option>');
+                $("#asignarMateria").attr("disabled", true);
             }
         },
         error:function(xhr,status,error){
@@ -72,6 +74,7 @@ function traerMateriasDisponibles(idAlumno){
 }
 
 function modalAsignarMateria(idAlumno){
+    listaMaterias=[];
     $("#modalAsignarMateria").modal('show');
     $("#txtCodigo").val(idAlumno);
     traerMateriasDisponibles(idAlumno);
@@ -129,7 +132,10 @@ function asingarMateriaAlumno(){
     $("#sltMaterias option").filter(function() {
         return $(this).val() == materia.Codigo;  
       }).remove();  
-    
+      console.log($("#sltMaterias").val());
+    if($("#sltMaterias").val() == null){
+        $("#asignarMateria").attr('disabled',true);
+    }
 }
 
 function iconoEliminar(materia){
@@ -147,6 +153,7 @@ function eliminarMateria(Codigo){
     redibujarTabla(listaMaterias);
     var select = $("#sltMaterias");
     select.append('<option value="'+materia[0].Codigo+'">'+materia[0].Nombre+'</option>');
+    $("#asignarMateria").attr('disabled',false);
 }
 function redibujarTabla(lista){
     $("#idTablaMateriasAsignadas").DataTable().clear().draw();
