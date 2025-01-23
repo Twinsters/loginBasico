@@ -12,7 +12,7 @@ function buscar(){
             success:function(response){
                 if(response.success){
                     console.log('Datos encontrados:',response.datos[0].usuario +" "+ response.datos[0].pass);
-                    alert('Datos encontrados: '+ response.datos[0].id +" "+ response.datos[0].usuario + " "+ response.datos[0].pass); 
+                    window.location.href="principal.php"; 
                 }
                   else{
                     alert('Credenciales falsas'); 
@@ -44,6 +44,7 @@ function registrarUsuario(){
             dataType:'json',     
             success:function(response){
                 if(response.success){
+                    window.location.href= "login.php";
                     alert('Datos guardados');
                 }
                 else{

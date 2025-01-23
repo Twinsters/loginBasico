@@ -1,9 +1,11 @@
 <?php
+
 include 'conexion.php';
 
 switch ($_REQUEST['case']) {
     case 'buscarUsuario':
         try {
+            session_start();
             $query = "SELECT * FROM Login WHERE usuario = :usuario";
             $consulta  = $conn->prepare($query);
             if (empty($_POST['usuario']) || empty($_POST['pass'])) {
@@ -21,10 +23,13 @@ switch ($_REQUEST['case']) {
             if ($datos) {
                 if(password_verify($password,$datos[0]['pass'])){
                     http_response_code(200); 
+                    $_SESSION['usuario'] = $datos[0]['usuario'];
                     echo json_encode([
                         'success' => true,
                         'datos' =>  $datos
                     ]);
+                   
+                    
                 }
                 else {
                     http_response_code(401);
@@ -88,71 +93,6 @@ switch ($_REQUEST['case']) {
                 'messege' => 'Error en el server'. $ex->getMessage()
             ]);
         }
-        break;
-    case 'buscarAlumnos':
-        
-        try {
-            $query = "SELECT a.Codigo,a.Nombre,a.Apellido,a.DNI,a.FechaNac,l.Nombre as Localidad FROM Alumno a, Localidad l WHERE a.CodLocalidad = l.Codigo";
-            $consulta  = $conn ->prepare($query);
-            $consulta ->execute();
-            $datos = $consulta ->fetchAll(PDO::FETCH_ASSOC);
-            if($datos){
-                http_response_code(200);
-                echo json_encode([
-                    'success' => true,
-                    'datos' => $datos
-                ]);
-            }
-            else{
-                http_response_code(401);
-                echo json_encode([
-                    'success' => false,
-                    'messege' => 'No se encontraron registros'
-                ]);
-            }
-        } catch (PDOException $ex) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'messege' => 'Error en el server' . $ex->getMessage()
-            ]);
-        }
-        break;
-    case 'buscarMaterias':
-        try {
-            $query = "SELECT m.Nombre FROM Alumno a, Alumno_Materia am, Materia m WHERE :codigoAlumno = a.Codigo  AND a.Codigo = am.codAlu AND m.Codigo = am.CodMat";
-            $consulta = $conn->prepare($query);
-
-            $codigoAlumno = $_GET['idAlumno'];
-            $consulta -> execute([
-                ':codigoAlumno' => $codigoAlumno
-            ]);
-            $datos = $consulta ->fetchAll(PDO::FETCH_ASSOC);
-            if($datos){
-                http_response_code(200);
-                echo json_encode([
-                    'success' => true,
-                    'datos' => $datos
-                ]);
-            }
-            else{
-                http_response_code(401);
-                echo json_encode([
-                    'success' => false,
-                    'messege' => 'No se encontraron registros'
-                ]);
-            }
-        } catch (PDOException $ex) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'messege' => 'Error: '. $ex->getMessage()
-            ]);
-        }
-        break;    
-    
-    default:
-        # code...
         break;
 }
 

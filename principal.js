@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 function buscarAlumnosCard(){
     $.ajax({
-        url:'loginBG.php',
+        url:'alumnoBG.php',
         method:'GET',
         data:{
             'case':'buscarAlumnos'
@@ -55,10 +55,10 @@ function mostrarMaterias(codigo){
     var bodyMaterias =$("#modalBodyMaterias");
     bodyMaterias.empty();
     $.ajax({
-        url:'loginBG.php',
+        url:'materiaBG.php',
         method:'GET',
         data:{
-            'case':'buscarMaterias',
+            'case':'buscarMateriasAlumno',
             'idAlumno': codigo
         },
         dataType:'json',
@@ -77,7 +77,7 @@ function mostrarMaterias(codigo){
             console.error('Estado:', status);
             console.error('Respuesta del servidor:', xhr.responseText);
             let resp = JSON.parse(xhr.responseText);  
-            alert(resp.messege);       
+            alert(resp.message);       
         }
     });     
 }

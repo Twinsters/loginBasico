@@ -6,7 +6,7 @@ $(document).ready(function(){
 });
 function buscarAlumnos(){
     $.ajax({
-        url:'loginBG.php',
+        url:'alumnoBG.php',
         method:'GET',
         data:{
             'case':'buscarAlumnos'
@@ -38,6 +38,7 @@ function buscarAlumnos(){
 function iconoAccionesAlumnos(codigo){
     var retorno="";
     retorno = retorno + '<button type="button" onclick="mostrarModalAlumnos('+codigo+')" class="btn btn-primary">Editar</button>'
+    retorno = retorno + '<button type="button" onclick="modalEliminarAlumno('+codigo+')" style="margin-left:5px;" class="btn btn-danger">Eliminar</button>'
     return retorno;
 }
 function buscarLocalidad(){
@@ -131,6 +132,33 @@ function guardarDatos(){
             alert(resp.message);
         }
     });
+}
+function modalEliminarAlumno(idAlumno){
+    $("#modalEliminarAlumno").modal('show');
+    $("#btnEliminarAlumno").unbind('click');
+    $("#btnEliminarAlumno").click(function(){
+        $.ajax({
+            url:'alumnoBG.php',
+            method:'DELETE',
+            data:{
+                'case':'eliminarAlumno',
+                'idAlumno':idAlumno
+            },
+            dataType:'json',
+            success:function(){
+                alert("Alumno eliminado exitosamente");
+                $("#modalEliminarAlumno").modal('hide');
+                buscarAlumnos();
+            },
+            error:function(xhr,status,error){
+                console.error('Error en la solicitud:', error);
+                console.error('Estado:', status);
+                console.error('Respuesta del servidor:', xhr.responseText);
+                let resp = JSON.parse(xhr.responseText);  
+                alert(resp.message);    
+            }
+        });
+    });  
 }
 
 

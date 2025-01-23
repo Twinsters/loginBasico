@@ -64,20 +64,38 @@
             }
             break;
         case 'asignarMateria':
-            try {
-                $query = "EXEC asignarMaterias :idAlumno, :idMateria";
-                $consulta = $conn->prepare($query);
-
-               if(isset($_POST['listaMaterias'])&& is_array($_POST['listaMaterias'])){
-                    foreach($_POST['listaMaterias'] as $materia){
-                
-                        $consulta ->bindParam(':idAlumno', $_POST['idAlumno']);
-                        $consulta ->bindParam(':idMateria', $materia['Codigo']);
-                        $consulta ->bindParam(':CodEstado', $materia['CodEstado']);
+            if (isset($_POST['idAlumno'], $_POST['listaMaterias']) && is_array($_POST['listaMaterias'])) {
+                foreach ($_POST['listaMaterias'] as $materia) {
+                    if (!isset($materia['Cod_estado'])) {
+                        http_response_code(400);
+                        echo json_encode([
+                            'success' => false,
+                            'message' => "Datos de materia incompletos"
+                        ]);
+                        exit;
                     }
-               }
-                $consulta->execute();
-                if($consulta->rowCount()>0){
+                }
+            }
+            try {
+                $conn->beginTransaction();
+                $successCount = 0;
+                $query = "EXEC asignarMaterias :codigoAM, :idAlumno, :idMateria, :CodEstado";
+                $consulta = $conn->prepare($query);
+                
+               foreach ($_POST['listaMaterias'] as $materia) {
+                    $codigoAm = $materia['CodigoAM'] == null ? 0: intval($materia['CodigoAM']);
+                    $consulta->bindValue(':codigoAM',  $codigoAm);
+                    $consulta->bindValue(':idAlumno', $_POST['idAlumno']);
+                    $consulta->bindValue(':idMateria', intval($materia['Codigo']));
+                    $consulta->bindValue(':CodEstado', trim($materia['Cod_estado']));
+                    echo $codigoAm,$_POST['idAlumno'],$materia['Codigo'],trim($materia['Cod_estado']);
+                    if ($consulta->execute()) {
+                       
+                        $successCount++;
+                    }
+                }
+                $conn->commit();
+                if($successCount >0){
                     http_response_code(200);
                     echo json_encode([
                         'success' => true,
@@ -91,19 +109,14 @@
                         'message' => "Error al asignar materias"
                     ]);                   
                 }
-
-            } catch (PDOException $ex) {             
+            } catch (PDOException $ex) {       
+                $conn->rollBack();      
                 http_response_code(500);
                 echo json_encode([
                     'success' => false,
-                    'message' => "Error en el servidor"
+                    'message' => "Error en el servidor". $ex->getMessage()
                 ]);                   
             }
         break;
-
-
-
     }
-
-
 ?>

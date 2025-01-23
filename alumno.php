@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,6 +91,26 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="guardarDatos();" data-bs-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eliminar Alumno -->
+<div class="modal" id="modalEliminarAlumno" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style='background-color:#1e8ec6; color:white;'>
+        <h5 class="modal-title">Eliminar Alumno</h5>
+        <input type="hidden" id="txtCodigo">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Desea eliminar al Alumno?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnEliminarAlumno">Eliminar</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>

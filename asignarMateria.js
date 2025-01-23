@@ -7,7 +7,7 @@ $(document).ready(function(){
 });
 function buscarAlumnos(){
     $.ajax({
-        url:'loginBG.php',
+        url:'alumnoBG.php',
         method:'GET',
         data:{
             'case':'buscarAlumnos'
@@ -30,7 +30,7 @@ function buscarAlumnos(){
             console.error('Estado:', status);
             console.error('Respuesta del servidor:', xhr.responseText);
             let resp = JSON.parse(xhr.responseText);  
-            alert(resp.message);  
+            alert(resp.message);      
         }
     })
 }
@@ -73,6 +73,7 @@ function traerMateriasDisponibles(idAlumno){
 
 function modalAsignarMateria(idAlumno){
     $("#modalAsignarMateria").modal('show');
+    $("#txtCodigo").val(idAlumno);
     traerMateriasDisponibles(idAlumno);
     $("#idTablaMateriasAsignadas").DataTable().clear().draw();
     $.ajax({
@@ -115,6 +116,7 @@ function estadosMateria(estadoActual){
         </select>
     `;
 }
+
 function asingarMateriaAlumno(){
     var materia = {
         'CodigoAM': "",
@@ -129,6 +131,7 @@ function asingarMateriaAlumno(){
       }).remove();  
     
 }
+
 function iconoEliminar(materia){
     var retorno = "";
     retorno = retorno + "<buttom type='buttom' class='btn btn-danger' onclick=eliminarMateria("+materia.Codigo+")>Eliminar</buttom>"
@@ -159,6 +162,7 @@ function redibujarTabla(lista){
     });
 }
 function guardarMateria(){
+    cargarLista();
     $.ajax({
         url:'asignarMateriaBG.php',
         method:'POST',
@@ -181,4 +185,22 @@ function guardarMateria(){
         }
 
     });
+}
+function cargarLista(){
+    listaMaterias = [];
+    var tablaMaterias = $('#idTablaMateriasAsignadas').DataTable(); 
+    
+    tablaMaterias.rows().every(function () {  
+        var datos = this.data();
+        var CodigoAM = datos[0];  
+        var Codigo = datos[1]; 
+        var Cod_estado = $(this.node()).find('td:eq(2) select').val();  
+        var materia = {
+            'CodigoAM': CodigoAM,
+            'Codigo': Codigo,
+            'Cod_estado': Cod_estado
+        };
+
+        listaMaterias.push(materia);  
+    }); 
 }

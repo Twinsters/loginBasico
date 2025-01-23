@@ -32,6 +32,39 @@ switch( $datos['case'] ?? $_REQUEST['case']){
             ]);
         }
     break;
+    case 'buscarMateriasAlumno':
+        try {
+            $query = "SELECT m.Nombre FROM Alumno a, Alumno_Materia am, Materia m WHERE :codigoAlumno = a.Codigo  AND a.Codigo = am.codAlu AND m.Codigo = am.CodMat";
+            $consulta = $conn->prepare($query);
+
+            $codigoAlumno = $_GET['idAlumno'];
+            $consulta -> execute([
+                ':codigoAlumno' => $codigoAlumno
+            ]);
+            $datos = $consulta ->fetchAll(PDO::FETCH_ASSOC);
+            if($datos){
+                http_response_code(200);
+                echo json_encode([
+                    'success' => true,
+                    'datos' => $datos
+                ]);
+            }
+            else{
+                http_response_code(401);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No se encontraron registros'
+                ]);
+            }
+        } catch (PDOException $ex) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error: '. $ex->getMessage()
+            ]);
+        }
+        break;    
+
     case 'buscarMateria':
         try {
             if(empty($_GET['idMateria'])){

@@ -1,6 +1,7 @@
 <?php
-include('librerias.php');
-
+    session_start();
+    include('librerias.php');
+    
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +43,11 @@ include('librerias.php');
             <button class="btn btn-primary" onclick="registrarUsuario();">Registrar</button>
         </div>
     </div>
+    <div class="row" style="margin-top:10px; margin-bottom:10px;text-align:center;">
+            <div class="col-12">
+                <a href="login.php">Login</a>
+            </div>
+        </div>
 </div>
 </body>
-</html>
+</html> 
